@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<converter>
+    <tab>
+            <person>
+                <col id="1">name</col>   
+                <col id="2">where</col>
+                <col id="3">info</col>
+            </person>
+            <goods>
+                <col id="1">name</col>
+            </goods>
+    </tab>
+</converter>
+
