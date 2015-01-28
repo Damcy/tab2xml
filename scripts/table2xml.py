@@ -1,6 +1,6 @@
 # -*- encoding=utf-8 -*-
 #
-# author: mayue<mayue07@baidu.com>
+# author: Damcy<stmayue@gmail.com>
 # create on: 2014-08-14
 
 import sys
@@ -9,11 +9,6 @@ import os
 from optparse import OptionParser
 import xml.dom.minidom
 import traceback
-
-sys.path.append("%s/../utility" %(os.path.abspath(os.path.dirname(__file__))))
-import mylogging
-
-log = None
 
 def getFormat(type, readConf):
     """
@@ -33,10 +28,9 @@ def getFormat(type, readConf):
             col_id = int(node.getAttribute("id"))
             col_name = node.childNodes[0].data
             ret[int(col_id) - 1] = col_name
-    except Exception, e:
-        log.error("read input dataFormat failed! traceback info: " + str(traceback.format_exc()))
+    except Exception:
+        sys.stderr.write("read input dataFormat failed! traceback info: " + str(traceback.format_exc()))
         exit(1)
-
     return ret
 
 
@@ -103,7 +97,7 @@ def getXml(xmlConf):
         data = fp.read().decode("utf-8")
         fp.close()
     except Exception as e:
-        log.error("read xml format failed! traceback info: " + str(traceback.format_exc()))
+        sys.stderr.write("read xml format failed! traceback info: " + str(traceback.format_exc()))
         fp.close()
         exit(1)
     return data
@@ -114,7 +108,7 @@ def load_tag(tagConf):
     读取tag dict，反应每一个element处于的tag
     """
     if not os.path.isfile(tagConf):
-        log.error("tag conf file ERROR!")
+        sys.stderr.write("tag conf file ERROR!")
         exit(1)
     try:
         fp = open(tagConf, 'r')
@@ -122,7 +116,7 @@ def load_tag(tagConf):
         fp.close()
         tagDict = json.loads(data)
     except:
-        log.error("read tag conf failed! traceback info: " + str(traceback.format_exc()))
+        sys.stderr.write("read tag conf failed! traceback info: " + str(traceback.format_exc()))
         fp.close()
         exit(1)
     return tagDict
@@ -145,30 +139,25 @@ if __name__ == "__main__":
         sys.stderr.write(msg)
         exit(1)
 
-    log = mylogging.getLogger(logConf)
-    log.setTaskId(id)
-    log.setType(type)
-
- 
     try:
         formatDict = getFormat(type, readConf)
     except Exception as ex:
         msg = "table2xml read data format fail. traceback info: " + str(traceback.format_exc())
-        log.error(msg)
+        sys.stderr.write(msg)
         exit(1)
 
     try:
         xmlStr = getXml(xmlConf)
     except Exception as ex:
         msg = "table2xml read xml format fail. traceback info: " + str(traceback.format_exc())
-        log.error(msg)
+        sys.stderr.write(msg)
         exit(1)
 
     try:
         tagDict = load_tag(tagConf)
     except:
         msg = "table2xml read tag config file fail. traceback info: " + str(traceback.format_exc())
-        log.error(msg)
+        sys.stderr.write(msg)
         exit(1)
 
     # process each line
@@ -179,6 +168,6 @@ if __name__ == "__main__":
             sys.stderr.write(line.strip('\n').split('\t')[0].decode(_INCODE).encode(_OUTCODE) + os.linesep)
         except:
             msg = "Line: " + line.strip('\n').decode(_INCODE) + " build XML ERROR! traceback info: " + str(traceback.format_exc()) + os.linesep
-            log.error(msg)
+            sys.stderr.write(msg)
             continue
 
