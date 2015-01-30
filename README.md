@@ -4,7 +4,7 @@
 **tab2xml** convert tab format data to xml format data, according your confs.
 
 ### input-sample
-format: damcy1 \t peking \t hello \t world
+format: damcy1 \t peking \t hello world
 
 eg: damcy2`	`china`	`生活是简明、安静和值得尝试的
 
