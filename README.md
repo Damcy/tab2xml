@@ -17,6 +17,11 @@ eg: damcy2`	`china`	`生活是简明、安静和值得尝试的
 cat test.data | python ./scripts/table2xml.py --type=person --readConf=./conf/demo.tabFormat --xmlConf=./conf/demo.xml --tagConf=./conf/demo.tag
 
 ## args
+#### type
+read conf from readConf
+
+see conf/demo.tabFormat, demo type is "person"
+
 ####readlConf
 your input tab format, it works when convert input raw data to dict format
 
